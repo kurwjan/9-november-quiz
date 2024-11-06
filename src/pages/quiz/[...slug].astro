@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import SingleChoiceLayout from '../../layouts/SingleChoiceLayout.astro';
+
+export async function getStaticPaths() {
+    const singleChoices = await getCollection('single_choice');
+    return singleChoices.map(singleChoice => ({
+        params: { slug: singleChoice.slug }, props: { singleChoice }
+    }));
+}
+
+const { singleChoice } = Astro.props;
+const { Content } = await singleChoice.render();
+---
+
+<SingleChoiceLayout choices={singleChoice.data.choices} valid={singleChoice.data.valid} title={singleChoice.data.title}>
+    <Content />
+</SingleChoiceLayout>

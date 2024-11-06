@@ -1,0 +1,39 @@
+---
+import Layout from './Layout.astro'
+interface Props {
+    choices: string[],
+    valid: string,
+    title: string,
+}
+
+const { choices, valid, title} = Astro.props;
+---
+
+<Layout title={title}>
+    <main>
+        <h1>{title}</h1>
+        <slot/>
+        {choices.map((choice) => (
+                <label>
+                    <input type="radio" id={choice} name="choices" value={choice}>
+                    {choice}
+                </label>
+        ))}
+        <br>
+        <br>
+        <button id="checkButton" data-valid={valid}>Check</button>
+    </main>
+</Layout>
+
+<script>
+    const checkButton: HTMLButtonElement = document.querySelector("#checkButton")!;
+
+    checkButton.addEventListener("click", () => {
+        let selected: string = (document.querySelector('input[name="choices"]:checked') as HTMLInputElement).value;
+        if (selected === checkButton.dataset.valid) {
+            alert("Correct answer");
+        } else {
+            alert("Wrong answer");
+        }
+    });
+</script>

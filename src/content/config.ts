@@ -12,6 +12,7 @@ const multipleChoiceCollection = defineCollection({
 const singleChoiceCollection = defineCollection({
     type: 'content',
     schema: z.object({
+        title: z.string(),
         choices: z.array(z.string()),
         valid: z.string(),
     })
@@ -26,7 +27,7 @@ const yesNoCollection = defineCollection({
 });
 
 export const collections = {
-    'multipleChoice': multipleChoiceCollection,
-    'singleChoiceCollection': singleChoiceCollection,
-    'yesNoCollectionm': yesNoCollection,
+    'multiple_choice': multipleChoiceCollection,
+    'single_choice': singleChoiceCollection,
+    'yes_no': yesNoCollection,
 };
