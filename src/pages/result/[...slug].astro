@@ -1,10 +1,10 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
-import SingleChoiceLayout from '../../layouts/SingleChoiceLayout.astro';
-
+import SingleChoiceResultLayout from '../../layouts/SingleChoiceResultLayout.astro';
 
 export async function getStaticPaths() {
     const singleChoices = await getCollection('single_choice');
+    const config = await getEntry('config', 'config');
 
     return singleChoices.map(singleChoice => ({
         params: { slug: singleChoice.slug },
@@ -12,21 +12,23 @@ export async function getStaticPaths() {
             singleChoice,
             index: singleChoices.indexOf(singleChoice) + 1,
             max: singleChoices.length,
+            next: config.data.page_list.at(config.data.page_list.indexOf(singleChoice.data.id) + 1) ?? null
         }
     }));
 }
 
-const { singleChoice, index, max} = Astro.props;
+const { singleChoice, index, max, next } = Astro.props;
 const { Content } = await singleChoice.render();
 ---
 
-<SingleChoiceLayout
+<SingleChoiceResultLayout
         choices={singleChoice.data.choices}
         valid={singleChoice.data.valid}
         subject={singleChoice.data.subject}
         index={index}
         max={max}
+        next={next}
         id={singleChoice.data.id}
 >
     <Content />
-</SingleChoiceLayout>
+</SingleChoiceResultLayout>

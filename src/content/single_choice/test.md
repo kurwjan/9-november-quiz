@@ -1,7 +1,7 @@
 ---
-choices: ["Eine Antwort (falsch)", "Eine Antwort (richtig)", "Eine Antwort (falsch)"]
+choices: ["Eine Antwort (falsch)", "Eine Antwort (richtig)", "Auch eine Antwort (falsch)"]
 valid: "Eine Antwort (richtig)"
-title: "Test Multiple Choices"
+subject: "Testfragen"
 id: "test"
 ---
-Hallo hier kann Text oder so eingefügt werden.
+Eines dieser Antworten ist richtig. Welche ist es?

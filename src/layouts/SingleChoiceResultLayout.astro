@@ -8,14 +8,15 @@ interface Props {
     subject: string,
     index: number,
     max: number,
+    next: string | null,
     id: string,
 }
 
-const { choices, valid, subject, index, max, id} = Astro.props;
+const { choices, valid, subject, index, max, next, id} = Astro.props;
 ---
 
 <Layout title={subject}>
-    <div class="root">
+    <div class="root" data-id={id}>
         <div class="flex justify-between items-start text-start w-full small">
             <small class="text-xs">Frage {index} von {max}</small>
             <a class="text-xs" href="/">x</a>
@@ -24,18 +25,32 @@ const { choices, valid, subject, index, max, id} = Astro.props;
         <div class="text-xl description">
             <slot/>
         </div>
-        <!--{choices.map((choice) => (
-                <label>
-                    <input type="radio" id={choice} name="choices" value={choice}>
+        {choices.map((choice) => (
+                <p data-valid={choice === valid ? "true" : "false"} data-selected="false" data-content={choice}>
                     {choice}
-                </label>
-        ))}-->
-        <RadioGroup choices={choices} client:load/>
-        <button id="checkButton" class="bg-white text-black rounded-lg text-xl border border-solid border-black" data-id={id} data-valid={valid}>Überprüfen</button>
+                </p>
+        ))}
+        {
+            next != null
+                ? <a class="bg-white text-black rounded-lg text-xl border border-solid border-black" href=`/quiz/${next}`>Nächste Frage</a>
+                : <p>fertig</p>
+        }
     </div>
 </Layout>
 
 <style>
+    p[data-valid="true"] {
+        color: green;
+    }
+
+    p[data-valid="false"] {
+        color: red;
+    }
+
+    p[data-selected="true"] {
+        border: 4px solid white;
+    }
+
     .root {
         display: flex;
         flex-direction: column;
@@ -85,13 +100,8 @@ const { choices, valid, subject, index, max, id} = Astro.props;
 </style>
 
 <script>
-    const checkButton: HTMLButtonElement = document.querySelector("#checkButton")!;
+    let rootDiv = document.querySelector(".root") as HTMLDivElement;
+    let selected: string = JSON.parse(localStorage.getItem(rootDiv.dataset.id as string) as string)["single_choice"];
 
-    checkButton.addEventListener("click", () => {
-        let selected: string = (document.querySelector('div[data-checked="true"] label') as HTMLLabelElement).textContent!;
-
-        localStorage.setItem(checkButton.dataset.id as string, JSON.stringify({"single_choice": selected}));
-
-        window.location.href = "/result/" + checkButton.dataset.id;
-    });
+    document.querySelector(`p[data-content="${selected}"]`)?.setAttribute("data-selected", "true");
 </script>
