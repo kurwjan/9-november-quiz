@@ -1,7 +1,6 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import SingleChoiceLayout from '../../layouts/SingleChoiceLayout.astro';
-
 
 export async function getStaticPaths() {
     const singleChoices = await getCollection('single_choice');

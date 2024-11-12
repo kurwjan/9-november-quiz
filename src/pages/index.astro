@@ -1,15 +1,15 @@
 ---
-import { getCollection } from "astro:content";
+import { getEntry } from "astro:content";
 import Layout from '../layouts/Layout.astro';
 
-const config = await getCollection('config');
+const config = await getEntry('config', 'config');
 
 //const allSingleChoices = await getCollection('single_choice');
 ---
 
 <Layout title="title">
     <h1>9. November</h1>
-    <a class="bg-white text-black rounded-lg text-2xl p-2.5 primary mb-3" href={`/quiz/${config[0].data.page_list[0] ?? ``}`}>Quiz starten</a>
+    <a class="bg-white text-black rounded-lg text-2xl p-2.5 primary mb-3" href={`/quiz/${config.data.page_list.at(0)!.id ?? ``}`}>Quiz starten</a>
     <a class="rounded-lg text-2xl p-2.5 secondary mb-3" href="/title_test">Title Test</a>
     <a class="rounded-lg text-2xl p-2.5 secondary">Credits</a>
     <!--{
@@ -21,9 +21,12 @@ const config = await getCollection('config');
 
 <style>
     h1 {
-        font-family: "Teko Variable", sans-serif;
+        font-family: "Playfair Display Variable", serif;
         font-variant-caps: small-caps;
-        font-size: 6rem;
+        font-size: 4rem;
+        font-weight: 600;
+
+        margin-bottom: 0.25em;
     }
 
     a {

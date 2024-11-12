@@ -1,7 +1,6 @@
 <script lang="ts">
     import {createRadioGroup, melt} from '@melt-ui/svelte';
 
-
     interface Props {
         choices: string[],
     }
@@ -10,9 +9,7 @@
     const {
         elements: {root, item},
         helpers: {isChecked},
-    } = createRadioGroup({
-        //defaultValue: 'default',
-    });
+    } = createRadioGroup({});
 </script>
 
 <div use:melt={$root} class="flex flex-col gap-1">
@@ -29,6 +26,8 @@
 <style>
     .root {
         font-family: 'Space Grotesk Variable', sans-serif;
+
+        width: 15.05em;
 
         user-select: none;
 
@@ -49,23 +48,15 @@
         border-radius: 12px;
     }
 
-    /*.root:active {
-        transform: scale(0.95);
-    }*/
-
     button {
         border-radius: 12px;
+
+        border: solid 3px rgb(16, 16, 16);
 
         cursor: default;
 
         width: 0.75em;
         height: 0.75em;
-    }
-
-    button[aria-checked="true"] {
-        background-color: white;
-
-        border: solid 3px rgb(16, 16, 16)
     }
 
     button[aria-checked="false"] {

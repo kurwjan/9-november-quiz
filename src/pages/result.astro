@@ -1,0 +1,139 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+
+import Layout from '../layouts/Layout.astro'
+import ResultGroup from "../components/ResultItem.svelte";
+
+const config = await getEntry('config', 'config');
+const page_list = config.data.page_list;
+
+const single_choice = await getCollection('single_choice');
+
+const collections = new Map();
+collections.set("single_choice", [...single_choice]);
+---
+
+<Layout title="Ergebnis">
+    <div class="root">
+        <div class="flex justify-between items-start text-start w-full small">
+            <small class="text-xs">Alle Fragen beantwortet!</small>
+            <a class="text-xs" href="/">x</a>
+        </div>
+        <h1>Ergebnis</h1>
+        <div class="flex flex-col gap-2 w-full">
+            <div class="flex flex-col gap-1 items-center items">
+                {
+                    page_list.map(async (page, index) =>
+                            <ResultGroup client:only="svelte" id={page.id} index={index + 1} description={collections.get(page.type).at(index).body}></ResultGroup>
+                    )
+                }
+            </div>
+            <div class="flex flex-row w-full justify-between items-end">
+                <h3 class="ml-6">Von <strong>{config.data.page_list.length}</strong></h3>
+                <div class="flex flex-col mr-6">
+                    <h6 class="self-end">X Fragen richtig</h6>
+                    <progress max="100" value="50"></progress>
+                </div>
+            </div>
+        </div>
+        <a class="bg-white text-black rounded-lg text-xl border border-solid border-black button" href=`/`>Zum Hauptmenü</a>
+    </div>
+</Layout>
+
+<style>
+    .root {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        width: 100%;
+
+        gap: 0.45em;
+    }
+
+    .small {
+        color: #656565;
+
+        padding: 0.3em 0.5em;
+
+        font-family: 'Space Grotesk Variable', sans-serif;
+    }
+
+    h1 {
+        font-family: "Playfair Display Variable", serif;
+        font-variant-caps: small-caps;
+        font-size: 3.8rem;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+
+    .items {
+        max-height: 8em;
+        overflow-y: auto;
+    }
+
+    h3 {
+        font-family: 'Space Grotesk Variable', sans-serif;
+        font-size: 1.25rem;
+        line-height: 0.85;
+    }
+
+    h6 {
+        font-family: 'Space Grotesk Variable', sans-serif;
+        font-size: 1.35rem;
+    }
+
+    progress {
+        background-color: rgb(28, 28, 28);
+
+        border-radius: 8px;
+
+        align-self: end;
+
+        width: 9.2em;
+        height: 0.5em;
+    }
+
+    progress::-webkit-progress-bar {
+        background-color: rgb(28, 28, 28);
+
+        border-radius: 8px;
+    }
+
+    progress::-webkit-progress-value {
+        background-color: white;
+
+        border-radius: 8px;
+    }
+
+    progress::-moz-progress-bar {
+        background-color: white;
+
+        border-radius: 8px;
+    }
+
+    .button {
+        user-select: none;
+
+        padding: 0.4rem 1.2rem 0.4rem 1.2rem;
+
+        font-family: 'Space Grotesk Variable', sans-serif;
+    }
+
+    .button:active {
+        transform: scale(0.95);
+        background-color: #dadada;
+    }
+</style>
+
+<script>
+    window.onload = () => {
+        let valid_choices = document.querySelectorAll("*[data-valid='true']").length;
+        let max_choices = document.querySelectorAll("*[data-valid]").length;
+
+        (document.querySelector("h6") as HTMLHeadingElement).innerHTML = `<strong>${valid_choices}</strong> Fragen richtig`;
+
+        (document.querySelector("progress") as HTMLProgressElement).value = (valid_choices / max_choices) * 100;
+    }
+</script>

@@ -14,6 +14,7 @@ const singleChoiceCollection = defineCollection({
     schema: z.object({
         subject: z.string(),
         choices: z.array(z.string()),
+        reasons: z.array(z.string()),
         valid: z.string(),
         id: z.string(),
     })
@@ -30,7 +31,10 @@ const yesNoCollection = defineCollection({
 const configCollection = defineCollection({
     type: 'content',
     schema: z.object({
-        page_list: z.array(z.string()),
+        page_list: z.array(z.object({
+            "type": z.string(),
+            "id": z.string(),
+        }))
     })
 })
 

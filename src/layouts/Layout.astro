@@ -19,6 +19,8 @@ import '@fontsource/righteous';
 // Supports weights 300-700
 import '@fontsource-variable/space-grotesk';
 
+import '@fontsource/unifrakturmaguntia';
+
 interface Props {
 	title: string;
 }
@@ -112,7 +114,3 @@ const { title } = Astro.props;
 		border: 2px solid rgba(0, 0, 0, 0.3);
 	}
 </style>
-
-<script is:inline>
-	document.documentElement.classList['add']('dark');
-</script>

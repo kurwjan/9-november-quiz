@@ -24,12 +24,6 @@ const { choices, valid, subject, index, max, id} = Astro.props;
         <div class="text-xl description">
             <slot/>
         </div>
-        <!--{choices.map((choice) => (
-                <label>
-                    <input type="radio" id={choice} name="choices" value={choice}>
-                    {choice}
-                </label>
-        ))}-->
         <RadioGroup choices={choices} client:load/>
         <button id="checkButton" class="bg-white text-black rounded-lg text-xl border border-solid border-black" data-id={id} data-valid={valid}>Überprüfen</button>
     </div>
@@ -41,6 +35,8 @@ const { choices, valid, subject, index, max, id} = Astro.props;
         flex-direction: column;
         align-items: center;
         text-align: center;
+
+        width: 100%;
 
         gap: 0.45em;
     }
@@ -54,10 +50,11 @@ const { choices, valid, subject, index, max, id} = Astro.props;
     }
 
     h1 {
-        font-family: 'Teko Variable', sans-serif;
-        font-size: 3rem;
-        line-height: 0.7;
-
+        font-family: "Playfair Display Variable", serif;
+        font-variant-caps: small-caps;
+        font-size: 3.8rem;
+        font-weight: 600;
+        line-height: 1.2;
     }
 
     .description {
@@ -69,11 +66,7 @@ const { choices, valid, subject, index, max, id} = Astro.props;
     button {
         user-select: none;
 
-        /*align-self: end;*/
-
         padding: 0.4rem 1.2rem 0.4rem 1.2rem;
-
-        /*margin-right: 0.8em;*/
 
         font-family: 'Space Grotesk Variable', sans-serif;
     }
@@ -90,7 +83,7 @@ const { choices, valid, subject, index, max, id} = Astro.props;
     checkButton.addEventListener("click", () => {
         let selected: string = (document.querySelector('div[data-checked="true"] label') as HTMLLabelElement).textContent!;
 
-        localStorage.setItem(checkButton.dataset.id as string, JSON.stringify({"single_choice": selected}));
+        localStorage.setItem(checkButton.dataset.id as string, JSON.stringify({"type": "single_choice", "content": selected, "valid": checkButton.dataset.valid === selected}));
 
         window.location.href = "/result/" + checkButton.dataset.id;
     });

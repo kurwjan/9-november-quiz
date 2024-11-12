@@ -20,6 +20,7 @@
     "@fontsource/abril-fatface": "^5.1.0",
     "@fontsource/dm-serif-display": "^5.1.0",
     "@fontsource/righteous": "^5.1.0",
+    "@fontsource/unifrakturmaguntia": "^5.1.0",
     "astro": "^4.16.7",
     "svelte": "^5.1.13",
     "tailwind-merge": "^2.5.4",
