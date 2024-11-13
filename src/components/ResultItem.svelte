@@ -33,10 +33,10 @@
     }
 
     .item[data-valid="true"] {
-        background-color: rgb(0, 16, 0);
+        background-color: rgb(0, 28, 0);
     }
 
     .item[data-valid="false"] {
-        background-color: rgb(16, 0, 0);
+        background-color: rgb(28, 0, 0);
     }
 </style>

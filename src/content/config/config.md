@@ -1,11 +1,8 @@
 ---
 page_list: [
-  {"type": "single_choice", "id": "test"},
-  {"type": "single_choice", "id": "test2"},
-  {"type": "single_choice", "id": "test3"},
-  {"type": "single_choice", "id": "test4"},
-  {"type": "single_choice", "id": "test5"},
-  {"type": "single_choice", "id": "test6"},
-  {"type": "single_choice", "id": "test7"},
+  {"type": "single_choice", "id": "0_first"},
+  {"type": "single_choice", "id": "1_republic_germany"},
+  {"type": "single_choice", "id": "2_year_of_republic"},
+  {"type": "single_choice", "id": "3_max_von_baden"},
 ]
 ---
