@@ -13,12 +13,13 @@ interface Props {
     next: string | null,
     id: string,
     image: ImageMetadata,
+    image_name: string,
 }
 
-const { choices, reasons, valid, subject, index, max, next, id, image} = Astro.props;
+const { choices, reasons, valid, subject, index, max, next, id, image, image_name} = Astro.props;
 ---
 
-<Layout title={subject} image={image}>
+<Layout title={subject} image={image} image_name={image_name}>
     <div class="root" data-id={id}>
         <div class="flex justify-between items-start text-start w-full small">
             <small class="text-xs">Frage {index} von {max}</small>

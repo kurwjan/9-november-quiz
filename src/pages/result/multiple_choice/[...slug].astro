@@ -23,11 +23,12 @@ export async function getStaticPaths() {
                 return currentValue.type === "multiple_choice" && currentValue.id === multipleChoice.data.id;
             }) + 1)?.id ?? ''}`,
             image: images[`/src/images/${multipleChoice.data.image}`]() as unknown as ImageMetadata,
+            image_name: multipleChoice.data.image,
         }
     }));
 }
 
-const {multipleChoice, index, max, next, image} = Astro.props;
+const {multipleChoice, index, max, next, image, image_name} = Astro.props;
 ---
 
 <MultipleChoiceResultLayout
@@ -40,5 +41,6 @@ const {multipleChoice, index, max, next, image} = Astro.props;
         next={next}
         id={multipleChoice.data.id}
         image={image}
+        image_name={image_name}
 >
 </MultipleChoiceResultLayout>

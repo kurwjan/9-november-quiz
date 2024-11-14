@@ -9,7 +9,7 @@ const config = await getEntry('config', 'config');
 //const allSingleChoices = await getCollection('single_choice');
 ---
 
-<Layout title="title" image={scheidemann}>
+<Layout title="title" image={scheidemann} image_name={"scheidemann.webp"}>
     <h1>9. November</h1>
     <h3>Quiz zum Jahr 1918</h3>
     <a class="bg-white text-black rounded-lg text-2xl p-2.5 primary mb-3" href={`/quiz/${config.data.page_list.at(0)!.type ?? ``}/${config.data.page_list.at(0)!.id ?? ``}`}>Quiz starten</a>

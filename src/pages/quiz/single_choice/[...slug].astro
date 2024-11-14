@@ -17,11 +17,12 @@ export async function getStaticPaths() {
             }) + 1,
             max: config.data.page_list.length,
             image: images[`/src/images/${singleChoice.data.image}`]() as unknown as ImageMetadata,
+            image_name: singleChoice.data.image,
         }
     }));
 }
 
-const { singleChoice, index, max, image } = Astro.props;
+const { singleChoice, index, max, image, image_name } = Astro.props;
 const { Content } = await singleChoice.render();
 ---
 
@@ -33,6 +34,7 @@ const { Content } = await singleChoice.render();
         max={max}
         id={singleChoice.data.id}
         image={image}
+        image_name={image_name}
 >
     <Content />
 </SingleChoiceLayout>

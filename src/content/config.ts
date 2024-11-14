@@ -38,9 +38,7 @@ const imageCollection = defineCollection({
         name: z.string(),
         short: z.string(),
         original: z.string(),
-        image: image().refine((img) => img.width >= 1080, {
-            message: "Cover image must be at least 1080 pixels wide!",
-        }),
+        image: z.string(),
     })
 })
 
