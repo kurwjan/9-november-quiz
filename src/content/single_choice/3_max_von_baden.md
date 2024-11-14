@@ -4,5 +4,6 @@ reasons: ["Zwar war er überzeugt von ihr, aber er musste den Kaiser abdanken.",
 valid: "Max von Baden dankt den Kaiser ab."
 subject: "Max von Baden"
 id: "3_max_von_baden"
+image: "scheidemann.webp"
 ---
 Was passierte vor dem Ausruf der Republik?

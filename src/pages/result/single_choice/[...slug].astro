@@ -1,0 +1,43 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import SingleChoiceResultLayout from '../../../layouts/SingleChoiceResultLayout.astro';
+import type {ImageMetadata} from "astro";
+
+export async function getStaticPaths() {
+    const singleChoices = await getCollection('single_choice');
+    const config = await getEntry('config', 'config');
+    const images = import.meta.glob<{ default: ImageMetadata }>("/src/images/*");
+
+    return singleChoices.map((singleChoice, index) => ({
+        params: { slug: singleChoice.slug },
+        props: {
+            singleChoice,
+            index: config.data.page_list.findIndex((currentValue) => {
+                return currentValue.type === "single_choice" && currentValue.id === singleChoice.data.id;
+            }) + 1,
+            max: config.data.page_list.length,
+            next: `${config.data.page_list.at(config.data.page_list.findIndex((currentValue) => {
+                return currentValue.type === "single_choice" && currentValue.id === singleChoice.data.id;
+            }) + 1)?.type ?? ''}/${config.data.page_list.at(config.data.page_list.findIndex((currentValue) => {
+                return currentValue.type === "single_choice" && currentValue.id === singleChoice.data.id;
+            }) + 1)?.id ?? ''}`,
+            image: images[`/src/images/${singleChoice.data.image}`]() as unknown as ImageMetadata,
+        }
+    }));
+}
+
+const { singleChoice, index, max, next, image } = Astro.props;
+---
+
+<SingleChoiceResultLayout
+        choices={singleChoice.data.choices}
+        reasons={singleChoice.data.reasons}
+        valid={singleChoice.data.valid}
+        subject={singleChoice.data.subject}
+        index={index}
+        max={max}
+        next={next}
+        id={singleChoice.data.id}
+        image={image}
+>
+</SingleChoiceResultLayout>

@@ -4,5 +4,6 @@ reasons: ["Während der Novemberrevolution, rief Philipp Scheidemann in diesen J
 valid: "09.11.1918"
 subject: "Philipp Scheidemann"
 id: "2_year_of_republic"
+image: "scheidemann.webp"
 ---
 Wann rief Philipp Scheidemann die Deutsche Republik aus?

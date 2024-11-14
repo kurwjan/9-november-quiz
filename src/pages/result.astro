@@ -1,19 +1,23 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import {getCollection, getEntry} from 'astro:content';
 
 import Layout from '../layouts/Layout.astro'
-import ResultGroup from "../components/ResultItem.svelte";
+import ResultItem from "../components/ResultItem.svelte";
+
+import scheidemann from '../images/scheidemann.webp';
 
 const config = await getEntry('config', 'config');
 const page_list = config.data.page_list;
 
 const single_choice = await getCollection('single_choice');
+const multiple_choice = await getCollection('multiple_choice');
 
 const collections = new Map();
 collections.set("single_choice", [...single_choice]);
+collections.set("multiple_choice", [...multiple_choice]);
 ---
 
-<Layout title="Ergebnis">
+<Layout title="Ergebnis" image={scheidemann}>
     <div class="root">
         <div class="flex justify-between items-start text-start w-full small">
             <small class="text-xs">Alle Fragen beantwortet!</small>
@@ -23,8 +27,12 @@ collections.set("single_choice", [...single_choice]);
         <div class="flex flex-col gap-2 w-full">
             <div class="flex flex-col gap-1 items-center items">
                 {
-                    page_list.map(async (page, index) =>
-                            <ResultGroup client:only="svelte" id={page.id} index={index + 1} description={collections.get(page.type).at(index).body}></ResultGroup>
+                    page_list.map((page, index) =>
+                            <ResultItem client:only="svelte" id={page.id} index={index + 1}
+                                        description={collections.get(page.type).find((currentValue: any) => {
+                                            return currentValue.data.id == page.id
+                                        }).body}>
+                            </ResultItem>
                     )
                 }
             </div>
@@ -36,7 +44,8 @@ collections.set("single_choice", [...single_choice]);
                 </div>
             </div>
         </div>
-        <a class="bg-white text-black rounded-lg text-xl border border-solid border-black button" href=`/`>Zum Hauptmenü</a>
+        <a class="bg-white text-black rounded-lg text-xl border border-solid border-black button" href=`/`>Zum
+            Hauptmenü</a>
     </div>
 </Layout>
 
@@ -129,8 +138,11 @@ collections.set("single_choice", [...single_choice]);
 
 <script>
     window.onload = () => {
-        let valid_choices = document.querySelectorAll("*[data-valid='true']").length;
-        let max_choices = document.querySelectorAll("*[data-valid]").length;
+        let valid_choices = document.querySelectorAll(".item[data-valid='true'][data-skip='false']").length;
+        valid_choices += document.querySelectorAll(".group[data-valid='true']").length;
+
+        let max_choices = document.querySelectorAll(".item[data-valid][data-skip='false']").length;
+        max_choices += document.querySelectorAll(".group[data-valid]").length;
 
         (document.querySelector("h6") as HTMLHeadingElement).innerHTML = `<strong>${valid_choices}</strong> Fragen richtig`;
 

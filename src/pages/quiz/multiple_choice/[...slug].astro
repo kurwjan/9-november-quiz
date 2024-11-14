@@ -1,0 +1,39 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import SingleChoiceLayout from '../../../layouts/SingleChoiceLayout.astro';
+import type {ImageMetadata} from "astro";
+import MultipleChoiceLayout from "../../../layouts/MultipleChoiceLayout.astro";
+
+export async function getStaticPaths() {
+    const multipleChoices = await getCollection('multiple_choice');
+    const config = await getEntry('config', 'config');
+    const images = import.meta.glob<{ default: ImageMetadata }>("/src/images/*");
+
+    return multipleChoices.map(multipleChoice => ({
+        params: { slug: multipleChoice.slug },
+        props: {
+            multipleChoice,
+            index: config.data.page_list.findIndex((currentValue) => {
+                return currentValue.type === "multiple_choice" && currentValue.id === multipleChoice.data.id;
+            }) + 1,
+            max: config.data.page_list.length,
+            image: images[`/src/images/${multipleChoice.data.image}`]() as unknown as ImageMetadata,
+        }
+    }));
+}
+
+const { multipleChoice, index, max, image } = Astro.props;
+const { Content } = await multipleChoice.render();
+---
+
+<MultipleChoiceLayout
+        choices={multipleChoice.data.choices}
+        valid={multipleChoice.data.valid}
+        subject={multipleChoice.data.subject}
+        index={index}
+        max={max}
+        id={multipleChoice.data.id}
+        image={image}
+>
+    <Content />
+</MultipleChoiceLayout>

@@ -2,14 +2,17 @@
 import { getEntry } from "astro:content";
 import Layout from '../layouts/Layout.astro';
 
+import scheidemann from '../images/scheidemann.webp';
+
 const config = await getEntry('config', 'config');
 
 //const allSingleChoices = await getCollection('single_choice');
 ---
 
-<Layout title="title">
+<Layout title="title" image={scheidemann}>
     <h1>9. November</h1>
-    <a class="bg-white text-black rounded-lg text-2xl p-2.5 primary mb-3" href={`/quiz/${config.data.page_list.at(0)!.id ?? ``}`}>Quiz starten</a>
+    <h3>Quiz zum Jahr 1918</h3>
+    <a class="bg-white text-black rounded-lg text-2xl p-2.5 primary mb-3" href={`/quiz/${config.data.page_list.at(0)!.type ?? ``}/${config.data.page_list.at(0)!.id ?? ``}`}>Quiz starten</a>
     <a class="rounded-lg text-2xl p-2.5 secondary mb-3">Gallerie</a>
     <a class="rounded-lg text-2xl p-2.5 secondary">Credits</a>
     <!--{
@@ -25,8 +28,20 @@ const config = await getEntry('config', 'config');
         font-variant-caps: small-caps;
         font-size: 4rem;
         font-weight: 600;
+        line-height: 0.8;
 
-        margin-bottom: 0.25em;
+        margin-top: 0.5em;
+    }
+
+    h3 {
+        font-family: "Playfair Display Variable", serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+
+        align-self: end;
+
+        margin-bottom: 1.2em;
+        margin-right: 1.8em;
     }
 
     a {

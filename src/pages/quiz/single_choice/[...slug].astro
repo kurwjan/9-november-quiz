@@ -1,0 +1,38 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import SingleChoiceLayout from '../../../layouts/SingleChoiceLayout.astro';
+import type {ImageMetadata} from "astro";
+
+export async function getStaticPaths() {
+    const singleChoices = await getCollection('single_choice');
+    const config = await getEntry('config', 'config');
+    const images = import.meta.glob<{ default: ImageMetadata }>("/src/images/*");
+
+    return singleChoices.map(singleChoice => ({
+        params: { slug: singleChoice.slug },
+        props: {
+            singleChoice,
+            index: config.data.page_list.findIndex((currentValue) => {
+                return currentValue.type === "single_choice" && currentValue.id === singleChoice.data.id;
+            }) + 1,
+            max: config.data.page_list.length,
+            image: images[`/src/images/${singleChoice.data.image}`]() as unknown as ImageMetadata,
+        }
+    }));
+}
+
+const { singleChoice, index, max, image } = Astro.props;
+const { Content } = await singleChoice.render();
+---
+
+<SingleChoiceLayout
+        choices={singleChoice.data.choices}
+        valid={singleChoice.data.valid}
+        subject={singleChoice.data.subject}
+        index={index}
+        max={max}
+        id={singleChoice.data.id}
+        image={image}
+>
+    <Content />
+</SingleChoiceLayout>

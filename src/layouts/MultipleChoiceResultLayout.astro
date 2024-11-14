@@ -6,7 +6,7 @@ import type { ImageMetadata } from "astro";
 interface Props {
     choices: string[],
     reasons: string[],
-    valid: string,
+    valid: string[],
     subject: string,
     index: number,
     max: number,
@@ -31,7 +31,7 @@ const { choices, reasons, valid, subject, index, max, next, id, image} = Astro.p
         <div class="flex flex-col gap-1 items">
             {choices.map((choice, index) => (
                     <details data-content={choice} class="text-2xl">
-                        <summary data-valid={choice === valid ? "true" : "false"} data-selected="false" data-content={choice}>{choice}</summary>
+                        <summary data-valid={valid.includes(choice) ? "true" : "false"} data-selected="false" data-content={choice}>{choice}</summary>
                         <p class="p-3 text-xl">
                             {reasons[index]}
                         </p>
@@ -145,16 +145,32 @@ const { choices, reasons, valid, subject, index, max, next, id, image} = Astro.p
 
 <script>
     let rootDiv = document.querySelector(".root") as HTMLDivElement;
-    let selected: string = JSON.parse(localStorage.getItem(rootDiv.dataset.id as string) as string)["content"];
+    let saved = JSON.parse(localStorage.getItem(rootDiv.dataset.id as string) as string);
+    let selected_list: string[] = JSON.parse(saved["content"]);
 
-    let summary = (document.querySelector(`summary[data-content="${selected}"]`)) as HTMLElement;
+    let valid = 1;
+    selected_list.forEach((selected) => {
+        let summary = (document.querySelector(`summary[data-content="${selected}"]`)) as HTMLElement;
+        summary.setAttribute("data-selected", "true");
+        (document.querySelector(`details[data-content="${selected}"]`) as HTMLDetailsElement).open = true;
 
-    summary.setAttribute("data-selected", "true");
-    (document.querySelector(`details[data-content="${selected}"]`) as HTMLDetailsElement).open = true;
+        if (summary.dataset.valid !== "true") {
+            document.querySelector(`.description p`)!.textContent = "Deine Antwort war leider falsch. Nächstes Mal klappt es bestimmt!";
+            valid = -1;
+        } else if (valid != 1) {
+            valid = 0;
+        }
+    });
 
-    if (summary.dataset.valid === "true") {
-        document.querySelector(`.description p`)!.textContent = "Deine Antwort war richtig!\nWeiter so!";
-    } else {
-        document.querySelector(`.description p`)!.textContent = "Deine Antwort war leider falsch. Nächstes Mal klappt es bestimmt!";
+    switch (valid) {
+        case 1:
+            document.querySelector(`.description p`)!.textContent = "Deine Antworten waren richtig!\nWeiter so!";
+            break;
+        case 0:
+            document.querySelector(`.description p`)!.textContent = "Deine Antworten waren teilweise richtig!\nNächstes mal wird es besser!";
+            break;
+        case -1:
+            document.querySelector(`.description p`)!.textContent = "Deine Antworten waren leider falsch. Nächstes Mal klappt es bestimmt!";
+            break;
     }
 </script>

@@ -4,5 +4,6 @@ reasons: ["Als er erfahren hat, dass Liebknecht sie ausrufen wollte, kam er ihn 
 valid: "Philipp Scheidemann"
 subject: "Ausrufung der Republik"
 id: "0_first"
+image: "scheidemann.webp"
 ---
 Wer rief zuerst die Republik aus?

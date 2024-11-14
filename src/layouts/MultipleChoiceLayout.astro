@@ -1,12 +1,12 @@
 ---
 import Layout from './Layout.astro'
-import RadioGroup from "../components/RadioGroup.svelte";
+import ToggleGroup from "../components/ToggleGroup.svelte";
 
 import type { ImageMetadata } from "astro";
 
 interface Props {
     choices: string[],
-    valid: string,
+    valid: string[],
     subject: string,
     index: number,
     max: number,
@@ -27,8 +27,8 @@ const { choices, valid, subject, index, max, id, image} = Astro.props;
         <div class="text-xl description">
             <slot/>
         </div>
-        <RadioGroup choices={choices} client:load/>
-        <button id="checkButton" class="bg-white text-black rounded-lg text-xl border border-solid border-black" data-id={id} data-valid={valid}>Überprüfen</button>
+        <ToggleGroup choices={choices} client:load/>
+        <button id="checkButton" class="bg-white text-black rounded-lg text-xl border border-solid border-black" data-id={id} data-valid={JSON.stringify(valid)}>Überprüfen</button>
     </div>
 </Layout>
 
@@ -84,10 +84,22 @@ const { choices, valid, subject, index, max, id, image} = Astro.props;
     const checkButton: HTMLButtonElement = document.querySelector("#checkButton")!;
 
     checkButton.addEventListener("click", () => {
-        let selected: string = (document.querySelector('div[data-checked="true"] label') as HTMLLabelElement).textContent!;
+        let selected_list = document.querySelectorAll('button[aria-pressed="true"]');
+        let selected_text: string[] = [];
+        for (let i = 0; i < selected_list.length ; i++) {
+            selected_text.push((selected_list[i] as HTMLButtonElement).textContent!.trim());
+        }
 
-        localStorage.setItem(checkButton.dataset.id as string, JSON.stringify({"type": "single_choice", "content": selected, "valid": checkButton.dataset.valid === selected}));
+        let valid_list = JSON.parse(checkButton.dataset.valid!);
+        let valid_text: string[] = [];
+        for (let i = 0; i < valid_list.length ; i++) {
+            if (selected_text.includes(valid_list[i])) {
+                valid_text.push(valid_list[i]);
+            }
+        }
 
-        window.location.href = "/result/single_choice/" + checkButton.dataset.id;
+        localStorage.setItem(checkButton.dataset.id as string, JSON.stringify({"type": "multiple_choice", "content": JSON.stringify(selected_text), "valid": JSON.stringify(valid_text)}));
+
+        window.location.href = "/result/multiple_choice/" + checkButton.dataset.id;
     });
 </script>

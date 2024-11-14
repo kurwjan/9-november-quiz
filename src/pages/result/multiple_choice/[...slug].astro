@@ -1,0 +1,44 @@
+---
+import {getCollection, getEntry} from 'astro:content';
+import SingleChoiceResultLayout from '../../../layouts/SingleChoiceResultLayout.astro';
+import type {ImageMetadata} from "astro";
+import MultipleChoiceResultLayout from "../../../layouts/MultipleChoiceResultLayout.astro";
+
+export async function getStaticPaths() {
+    const multipleChoices = await getCollection('multiple_choice');
+    const config = await getEntry('config', 'config');
+    const images = import.meta.glob<{ default: ImageMetadata }>("/src/images/*");
+
+    return multipleChoices.map((multipleChoice) => ({
+        params: {slug: multipleChoice.slug},
+        props: {
+            multipleChoice,
+            index: config.data.page_list.findIndex((currentValue) => {
+                return currentValue.type === "multiple_choice" && currentValue.id === multipleChoice.data.id;
+            }) + 1,
+            max: config.data.page_list.length,
+            next: `${config.data.page_list.at(config.data.page_list.findIndex((currentValue) => {
+                return currentValue.type === "multiple_choice" && currentValue.id === multipleChoice.data.id;
+            }) + 1)?.type ?? ''}/${config.data.page_list.at(config.data.page_list.findIndex((currentValue) => {
+                return currentValue.type === "multiple_choice" && currentValue.id === multipleChoice.data.id;
+            }) + 1)?.id ?? ''}`,
+            image: images[`/src/images/${multipleChoice.data.image}`]() as unknown as ImageMetadata,
+        }
+    }));
+}
+
+const {multipleChoice, index, max, next, image} = Astro.props;
+---
+
+<MultipleChoiceResultLayout
+        choices={multipleChoice.data.choices}
+        reasons={multipleChoice.data.reasons}
+        valid={multipleChoice.data.valid}
+        subject={multipleChoice.data.subject}
+        index={index}
+        max={max}
+        next={next}
+        id={multipleChoice.data.id}
+        image={image}
+>
+</MultipleChoiceResultLayout>
