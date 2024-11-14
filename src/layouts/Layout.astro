@@ -35,6 +35,10 @@ const { title, image } = Astro.props;
 				<slot />
 			</main>
 		</div>
+		<div class="notice flex items-center gap-3">
+			<p>Reichstaggebäude, Philipp Scheidemann ruft die Republik aus</p>
+			<a href="#" class="bg-white text-black rounded-lg small-button">Mehr Info</a>
+		</div>
 	</body>
 </html>
 
@@ -106,5 +110,30 @@ const { title, image } = Astro.props;
 		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 		backdrop-filter: blur(36px);
 		border: 2px solid rgba(0, 0, 0, 0.3);
+	}
+
+	.notice {
+		position: absolute;
+		right: 2em;
+		bottom: 2em;
+
+		padding: 0.25em 0.75em;
+
+		/* Frosted glass effect */
+		background: rgba(12, 12, 12, 0.75);
+		border-radius: 16px;
+		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+		backdrop-filter: blur(36px);
+		border: 2px solid rgba(0, 0, 0, 0.3);
+	}
+
+	.small-button {
+		font-family: 'Space Grotesk Variable', sans-serif;
+		padding: 0.25rem 0.5rem;
+	}
+
+	.small-button:active {
+		transform: scale(0.95);
+		background-color: #dadada;
 	}
 </style>

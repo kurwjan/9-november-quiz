@@ -32,6 +32,13 @@ const yesNoCollection = defineCollection({
     })
 });
 
+const imageCollection = defineCollection({
+    type: 'content',
+    schema: z.object({
+        name: z.string()
+    })
+})
+
 const configCollection = defineCollection({
     type: 'content',
     schema: z.object({
