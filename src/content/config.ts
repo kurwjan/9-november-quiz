@@ -34,8 +34,13 @@ const yesNoCollection = defineCollection({
 
 const imageCollection = defineCollection({
     type: 'content',
-    schema: z.object({
-        name: z.string()
+    schema: ({ image }) => z.object({
+        name: z.string(),
+        short: z.string(),
+        original: z.string(),
+        image: image().refine((img) => img.width >= 1080, {
+            message: "Cover image must be at least 1080 pixels wide!",
+        }),
     })
 })
 
@@ -54,4 +59,5 @@ export const collections = {
     'single_choice': singleChoiceCollection,
     'yes_no': yesNoCollection,
     'config': configCollection,
+    'images': imageCollection,
 };

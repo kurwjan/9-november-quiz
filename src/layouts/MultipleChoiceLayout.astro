@@ -15,6 +15,8 @@ interface Props {
 }
 
 const { choices, valid, subject, index, max, id, image} = Astro.props;
+
+console.log(image.src);
 ---
 
 <Layout title={subject} image={image}>

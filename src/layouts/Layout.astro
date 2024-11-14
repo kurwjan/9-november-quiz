@@ -5,6 +5,13 @@ import '@fontsource-variable/space-grotesk';
 import { Image } from 'astro:assets';
 import type {ImageMetadata} from "astro";
 
+import { getCollection } from 'astro:content';
+
+const images = await getCollection("image");
+let current_image = images.find((value) => {
+	return value.id == "liebknecht.md";
+});
+
 interface Props {
 	title: string;
 	image: ImageMetadata;
@@ -26,17 +33,17 @@ const { title, image } = Astro.props;
 	</head>
 	<body>
 		<!--<FullscreenModal client:only="svelte"></FullscreenModal>-->
-		<video preload="auto" autoplay muted loop>
+		<!--<video preload="auto" autoplay muted loop>
 			<source src="/video.webm" type="video/webm">
-		</video>
-		<Image src={image} alt="Reichstag" />
+		</video>-->
+		<Image src={current_image!.data.image} alt="Reichstag" />
 		<div class="left">
 			<main class="on-video">
 				<slot />
 			</main>
 		</div>
 		<div class="notice flex items-center gap-3">
-			<p>Reichstaggebäude, Philipp Scheidemann ruft die Republik aus</p>
+			<p>{current_image!.data.short}</p>
 			<a href="#" class="bg-white text-black rounded-lg small-button">Mehr Info</a>
 		</div>
 	</body>
