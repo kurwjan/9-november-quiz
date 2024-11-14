@@ -25,7 +25,7 @@
         <div use:melt={$content} class="content">
             <!--<h2 use:melt={$title}>Not in Fullscreen</h2>
             <p use:melt={$description}>Pls open in fullscreen</p>-->
-            <button use:melt={$close} onclick={requestFullscreen} class="text-5xl"> ENTER FULLSCREEN MODE </button>
+            <button use:melt={$close} class="text-xl"> Zurück </button>
         </div>
     </div>
 {/if}
@@ -41,6 +41,8 @@
     }
 
     .content {
+        font-family: 'Space Grotesk Variable', sans-serif;
+
         position: fixed;
         left: 50%;
         top: 50%;
@@ -53,14 +55,11 @@
 
         transform: translate(-50%, -50%);
 
-        border-radius: 0.375rem;
+        padding: 0 0 0.95em;
 
-        background-color: rgb(var(--color-white) / 1);
-
-        padding: 1.5rem;
-
-        box-shadow: 0 10px 15px -3px rgb(var(--color-black) / 0.1),
-        0 4px 6px -4px rgb(var(--color-black) / 0.1);
+        /* Frosted glass effect */
+        background: rgba(12, 12, 12, 0.75);
+        border: 2px solid rgba(0, 0, 0, 0.3);
     }
 
     button {

@@ -20,8 +20,6 @@ const images = await getCollection("image");
 const current_image = images.find((value) => {
 	return value.data.image == image_name;
 });
-const image_file = await getImage(current_image!.data.image)
-console.log(image_file)
 ---
 
 <!DOCTYPE html>
@@ -48,7 +46,7 @@ console.log(image_file)
 		</div>
 		<div class="notice flex items-center gap-3">
 			<p>{current_image!.data.short}</p>
-			<a href="#" class="bg-white text-black rounded-lg small-button">Mehr Info</a>
+			<!--<a href="#" class="bg-white text-black rounded-lg small-button">Mehr Info</a>-->
 		</div>
 	</body>
 </html>
@@ -128,7 +126,7 @@ console.log(image_file)
 		right: 2em;
 		bottom: 2em;
 
-		padding: 0.25em 0.75em;
+		padding: 0.5em 0.75em;
 
 		/* Frosted glass effect */
 		background: rgba(12, 12, 12, 0.75);

@@ -1,6 +1,7 @@
 ---
 import { getEntry } from "astro:content";
 import Layout from '../layouts/Layout.astro';
+import CreditsFullscreen from '../components/CreditsFullscreen.svelte';
 
 import scheidemann from '../images/scheidemann.webp';
 
@@ -13,8 +14,8 @@ const config = await getEntry('config', 'config');
     <h1>9. November</h1>
     <h3>Quiz zum Jahr 1918</h3>
     <a class="bg-white text-black rounded-lg text-2xl p-2.5 primary mb-3" href={`/quiz/${config.data.page_list.at(0)!.type ?? ``}/${config.data.page_list.at(0)!.id ?? ``}`}>Quiz starten</a>
-    <a class="rounded-lg text-2xl p-2.5 secondary mb-3">Gallerie</a>
-    <a class="rounded-lg text-2xl p-2.5 secondary">Credits</a>
+    <!--<a class="rounded-lg text-2xl p-2.5 secondary mb-3">Gallerie</a>-->
+    <CreditsFullscreen client:only="svelte"></CreditsFullscreen>
     <!--{
         allSingleChoices.map((singleChoice) => (
                 <a href={`/quiz/${singleChoice.slug}`}>{singleChoice.data.title}</a>
